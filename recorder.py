@@ -347,7 +347,7 @@ def main():
 			if waitDuration>0:
 				time.sleep(waitDuration)
 			l.join()
-			#l.record()
+			l.record()
 			l.exit()
 
 	uploadToDrive(c)
