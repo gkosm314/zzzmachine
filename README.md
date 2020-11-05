@@ -8,12 +8,12 @@ This script automates the recording of online lectures and uploads the recording
 
 ## Requriments
 The scirpt is developed for Linux machines.
-
-  Selenium: https://www.selenium.dev/
-  Chromedriver: https://chromedriver.chromium.org/
-  FFmpeg: https://ffmpeg.org/
-  Pavucontrol: https://launchpad.net/ubuntu/+source/pavucontrol
-  Pydrive library: https://pythonhosted.org/PyDrive/
+It reqiures:
+  *Selenium: https://www.selenium.dev/
+  *Chromedriver: https://chromedriver.chromium.org/
+  *FFmpeg: https://ffmpeg.org/
+  *Pavucontrol: https://launchpad.net/ubuntu/+source/pavucontrol
+  *Pydrive library: https://pythonhosted.org/PyDrive/
   
 ## Installation
  
