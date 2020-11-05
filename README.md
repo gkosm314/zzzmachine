@@ -21,5 +21,5 @@ It reqiures:
 2. Then follow the instructions described in the following articles:
    * https://itectec.com/ubuntu/ubuntu-capturing-only-desktop-audio-with-ffmpeg/
    * https://medium.com/analytics-vidhya/how-to-connect-google-drive-to-python-using-pydrive-9681b2a14f20
-3. After that, run database_initializer.py in order to create the myschedule.db file.
-4. Finally insert your schedule in the myschedule.db file.
+3. After that, run *database_initializer.py* in order to create **myschedule.db**
+4. Finally insert your schedule in **myschedule.db**
