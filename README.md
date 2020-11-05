@@ -2,11 +2,11 @@
 
 The more you sleep, the more you learn.
 
-##Introduction
+## Introduction
 
 This script automates the recording of online lectures and uploads the recordings to a Google Drive account.
 
-##Requriments
+## Requriments
 The scirpts is developed for Linux machines.
 
   Selenium: https://www.selenium.dev/
@@ -15,7 +15,7 @@ The scirpts is developed for Linux machines.
   Pavucontrol: https://launchpad.net/ubuntu/+source/pavucontrol
   Pydrive library: https://pythonhosted.org/PyDrive/
   
-##Installation
+## Installation
  
 Install selenium, chromedriver, pavucontrol and pydrive.
 Then follow the instructions described in the following articles:
