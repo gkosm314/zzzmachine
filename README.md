@@ -22,4 +22,4 @@ It reqiures:
    * https://itectec.com/ubuntu/ubuntu-capturing-only-desktop-audio-with-ffmpeg/
    * https://medium.com/analytics-vidhya/how-to-connect-google-drive-to-python-using-pydrive-9681b2a14f20
 3. After that, run *database_initializer.py* in order to create **myschedule.db**
-4. Finally insert your schedule in **myschedule.db**
+4. Finally insert your schedule in **myschedule.db** and run *recorder.py*
