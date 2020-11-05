@@ -7,7 +7,7 @@ The more you sleep, the more you learn.
 This script automates the recording of online lectures and uploads the recordings to a Google Drive account.
 
 ## Requriments
-The scirpts is developed for Linux machines.
+The scirpt is developed for Linux machines.
 
   Selenium: https://www.selenium.dev/
   Chromedriver: https://chromedriver.chromium.org/
