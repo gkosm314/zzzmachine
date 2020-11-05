@@ -24,7 +24,7 @@ NTUA_USERNAME =  'el18XXX'
 NTUA_PASSWORD = 'YOUR_PASSWORD_HERE'
 IMPLICITLY_WAIT_TIME = 30 #seconds/default = 60
 RETRY_TO_JOIN =  30 #seconds/default = 60
-REC_FRAMES_PER_SECOND = 15
+REC_FRAMES_PER_SECOND = 10
 DATABASE_NAME = "myschedule.db"
 MINUTES_BEFORE_LECTURE = 0
 MINUTES_AFTER_LECTURE = 10
@@ -113,8 +113,10 @@ def uploadToDrive(db_cursor):
 		except Exception as e:
 			drive_folder = google_drive.ListFile({'q': "title = 'misc' and trashed=false"}).GetList()[0]
 		drive_file = google_drive.CreateFile({'title': recording_title, 'parents': [{'id': drive_folder['id']}]})
+		print("Uploading {}".format(recording_title))
 		drive_file.SetContentFile(parent_dir + '/' + recording_title)		
 		drive_file.Upload()	
+		print("Uploaded {}".format(recording_title))
 		updateCourseLectureNo(drive_folder_name,db_cursor)
 
 
@@ -198,7 +200,12 @@ class  lecture:
 class teamsLecture(lecture):
 	def __init__(self, course, lecture_no, startingTime, endingTime,team_title, team_channel = "General"): 
 		self.team_title = team_title
-		self.team_channel = team_channel
+		if team_title == 'Αρχιτεκτονική Υπολογιστών (ΚΑΤ-ΠΑΠΑΓ)':
+			self.team_channel = 'Διάλεξη {}η'.format(lecture_no)
+		elif team_title == 'Βιομηχανική Ηλεκτρονική':
+			self.team_channel = '{}ο Μάθημα'.format(lecture_no)
+		else:
+			self.team_channel = team_channel
 		lecture.__init__(self, course, lecture_no,startingTime, endingTime) 
 
 	def showDetails(self):
@@ -223,7 +230,11 @@ class teamsLecture(lecture):
 	def teamsEnterCourse(self):
 		#self.clickByCssSelector('#toast-container button[title="Dismiss"]');
 		self.clickByCssSelector('profile-picture[title*="' + self.team_title + '"]')
-		self.clickByCssSelector('.school-app-team-channel   .channel-anchor[title="' + self.team_channel +'"]')
+		if self.team_title == 'Αρχιτεκτονική Υπολογιστών (ΚΑΤ-ΠΑΠΑΓ)'  or self.team_title == 'Βιομηχανική Ηλεκτρονική':
+			self.clickByCssSelector('.school-app-team-channel   .channel-anchor[title*="hidden channel"]')
+			self.clickByCssSelector('.channel-list-overflow-channels   .channel-anchor[title*="' + self.team_channel +'"]')
+		else:
+			self.clickByCssSelector('.school-app-team-channel   .channel-anchor[title*="' + self.team_channel +'"]')
 	
 	def teamsJoinMeeting(self):
 		while (len(self.browser.find_elements_by_css_selector("calling-join-button button")) == 0):
@@ -238,11 +249,14 @@ class teamsLecture(lecture):
 	
 	def exit(self):
 		actions = webdriver.ActionChains(self.browser)
-		hangup_element = self.browser.find_element_by_id("hangup-button")
-		actions.move_to_element(hangup_element);
-		actions.pause(2)
-		actions.click(hangup_element)
-		actions.perform()
+		try:
+			hangup_element = self.browser.find_element_by_id("hangup-button")
+			actions.move_to_element(hangup_element);
+			actions.pause(2)
+			actions.click(hangup_element)
+			actions.perform()
+		except Exception as e:
+			raise e
 		self.browser.implicitly_wait(IMPLICITLY_WAIT_TIME) 
 		self.browser.quit()
 	
@@ -333,7 +347,7 @@ def main():
 			if waitDuration>0:
 				time.sleep(waitDuration)
 			l.join()
-			l.record()
+			#l.record()
 			l.exit()
 
 	uploadToDrive(c)
