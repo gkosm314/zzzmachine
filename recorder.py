@@ -1,5 +1,5 @@
 #Requirments: selenium,chromedriver,pavucontrol
-#chromedriver: https://askubuntu.com/questions/870530/how-to-install-geckodriver-in-ubuntu
+#chromedriver: https://chromedriver.chromium.org/
 #pavucontrol guide: https://itectec.com/ubuntu/ubuntu-capturing-only-desktop-audio-with-ffmpeg/
 #pydrive guide: https://medium.com/analytics-vidhya/how-to-connect-google-drive-to-python-using-pydrive-9681b2a14f20
 
