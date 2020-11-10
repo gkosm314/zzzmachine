@@ -1,4 +1,4 @@
-#Requirments: selenium,chromedriver,pavucontrol
+#Requirments: selenium,chromedriver,pavucontrol,pydrive
 #chromedriver: https://chromedriver.chromium.org/
 #pavucontrol guide: https://itectec.com/ubuntu/ubuntu-capturing-only-desktop-audio-with-ffmpeg/
 #pydrive guide: https://medium.com/analytics-vidhya/how-to-connect-google-drive-to-python-using-pydrive-9681b2a14f20
@@ -19,8 +19,8 @@ from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
 #SCRIPT PARAMETERS-BEGIN
-TEAMS_EMAIL = 'el18XXX@ntua.gr'
-NTUA_USERNAME =  'el18XXX'
+TEAMS_EMAIL = 'elXXXXX@ntua.gr'
+NTUA_USERNAME =  'elXXXXX'
 NTUA_PASSWORD = 'YOUR_PASSWORD_HERE'
 IMPLICITLY_WAIT_TIME = 30 #seconds/default = 60
 RETRY_TO_JOIN =  30 #seconds/default = 60
@@ -28,6 +28,7 @@ REC_FRAMES_PER_SECOND = 10
 DATABASE_NAME = "myschedule.db"
 MINUTES_BEFORE_LECTURE = 0
 MINUTES_AFTER_LECTURE = 10
+CHANNEL_NUMBER_HOLDER = "#LECTURE_NO#"
 #SCRIPT PARAMETERS-END
 
 def tupleToLecture(t):
@@ -200,12 +201,7 @@ class  lecture:
 class teamsLecture(lecture):
 	def __init__(self, course, lecture_no, startingTime, endingTime,team_title, team_channel = "General"): 
 		self.team_title = team_title
-		if team_title == 'Αρχιτεκτονική Υπολογιστών (ΚΑΤ-ΠΑΠΑΓ)':
-			self.team_channel = 'Διάλεξη {}η'.format(lecture_no)
-		elif team_title == 'Βιομηχανική Ηλεκτρονική':
-			self.team_channel = '{}ο Μάθημα'.format(lecture_no)
-		else:
-			self.team_channel = team_channel
+		self.team_channel = team_channel.replace(CHANNEL_NUMBER_HOLDER, str(lecture_no));
 		lecture.__init__(self, course, lecture_no,startingTime, endingTime) 
 
 	def showDetails(self):
@@ -217,6 +213,8 @@ class teamsLecture(lecture):
 		self.browser.get("http://teams.microsoft.com/")
 		self.inputTextboxByName("loginfmt", TEAMS_EMAIL)
 		self.clickByCssSelector( ".button.primary")
+		self.browser.implicitly_wait(IMPLICITLY_WAIT_TIME) 
+
 		self.inputTextboxByName("j_username", NTUA_USERNAME)
 		self.inputTextboxByName("j_password", NTUA_PASSWORD)
 		self.clickByName("donotcache")
@@ -230,11 +228,11 @@ class teamsLecture(lecture):
 	def teamsEnterCourse(self):
 		#self.clickByCssSelector('#toast-container button[title="Dismiss"]');
 		self.clickByCssSelector('profile-picture[title*="' + self.team_title + '"]')
-		if self.team_title == 'Αρχιτεκτονική Υπολογιστών (ΚΑΤ-ΠΑΠΑΓ)'  or self.team_title == 'Βιομηχανική Ηλεκτρονική':
+		try:
+			self.clickByCssSelector('.school-app-team-channel   .channel-anchor[title*="' + self.team_channel +'"]')
+		except Exception as e:
 			self.clickByCssSelector('.school-app-team-channel   .channel-anchor[title*="hidden channel"]')
 			self.clickByCssSelector('.channel-list-overflow-channels   .channel-anchor[title*="' + self.team_channel +'"]')
-		else:
-			self.clickByCssSelector('.school-app-team-channel   .channel-anchor[title*="' + self.team_channel +'"]')
 	
 	def teamsJoinMeeting(self):
 		while (len(self.browser.find_elements_by_css_selector("calling-join-button button")) == 0):
