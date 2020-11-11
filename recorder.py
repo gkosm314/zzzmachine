@@ -26,6 +26,7 @@ IMPLICITLY_WAIT_TIME = 30 #seconds/default = 60
 RETRY_TO_JOIN =  30 #seconds/default = 60
 REC_FRAMES_PER_SECOND = 10
 DATABASE_NAME = "myschedule.db"
+SAVE_DIRECTORY = "recorded_lectures/" #may need removal of / and + / everywhere it appears(after GUI file selection)
 MINUTES_BEFORE_LECTURE = 0
 MINUTES_AFTER_LECTURE = 10
 CHANNEL_NUMBER_HOLDER = "#LECTURE_NO#"
@@ -75,7 +76,7 @@ def setupChromeOptions():
 
 def createDirectory():
 	try:
-		mkdir('recorded_lectures/' + datetime.date.today().isoformat()) #creates directory to save today's recordings
+		mkdir(SAVE_DIRECTORY + datetime.date.today().isoformat()) #creates directory to save today's recordings
 	except Exception as e:
 		print("mkdir: Directory already exists, no need to create it.")	
 
@@ -104,7 +105,7 @@ def uploadToDrive(db_cursor):
 	gauth.LoadCredentialsFile("credentials.txt")
 	google_drive = GoogleDrive(gauth)
 
-	parent_dir = 'recorded_lectures/' + datetime.date.today().isoformat()
+	parent_dir = SAVE_DIRECTORY + datetime.date.today().isoformat()
 	lectrures_to_upload = listdir(parent_dir)
 
 	for recording_title in lectrures_to_upload:
@@ -112,6 +113,8 @@ def uploadToDrive(db_cursor):
 		try:
 			drive_folder = google_drive.ListFile({'q': "title = '{}' and trashed=false".format(drive_folder_name)}).GetList()[0] 
 		except Exception as e:
+			#create folder and
+			#drive_folder = google_drive.ListFile({'q': "title = '{}' and trashed=false".format(drive_folder_name)}).GetList()[0] 
 			drive_folder = google_drive.ListFile({'q': "title = 'misc' and trashed=false"}).GetList()[0]
 		drive_file = google_drive.CreateFile({'title': recording_title, 'parents': [{'id': drive_folder['id']}]})
 		print("Uploading {}".format(recording_title))
@@ -145,7 +148,7 @@ class  lecture:
 	def recordName(self):
 		date_iso = datetime.date.today().isoformat()
 		date_str = datetime.date.today().strftime("%d-%m-%Y")
-		output_directory = "recorded_lectures/{}/".format(date_iso)
+		output_directory = SAVE_DIRECTORY + "{}/".format(date_iso)
 		output_name = "{} - Διάλεξη {} ({})".format(self.course, self.lecture_no,date_str)
 		if path.exists(output_directory+output_name+'.mp4'):
 			i = 1
