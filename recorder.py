@@ -125,9 +125,9 @@ def uploadToDrive(db_cursor):
 
 
 def updateCourseLectureNo(folder_name,db_cursor):
-	db_cursor.execute("SELECT number_of_lectures FROM courses_db WHERE course_name = '{}'".format(folder_name));
+	db_cursor.execute("SELECT number_of_lectures FROM courses_db WHERE course_name = ?",(folder_name,));
 	new_no_of_lectures = db_cursor.fetchone()[0] + 1
-	db_cursor.execute("UPDATE courses_db SET number_of_lectures = {} WHERE course_name = '{}'".format(new_no_of_lectures,folder_name))
+	db_cursor.execute("UPDATE courses_db SET number_of_lectures = ? WHERE course_name = ?",(new_no_of_lectures,folder_name))
 
 
 class  lecture:
@@ -309,7 +309,7 @@ def main():
 	db_connection = sqlite3.connect(DATABASE_NAME) 
 	c = db_connection.cursor();
 
-	c.execute("SELECT * FROM canceled_days WHERE day_of_the_month ='{}' AND month ='{}'".format(day_int,month_int))
+	c.execute("SELECT * FROM canceled_days WHERE day_of_the_month = ? AND month =?",(day_int,month_int))
 	if len(c.fetchall()) != 0:
 		print("No lectures today")
 		return
@@ -325,11 +325,11 @@ def main():
 	courses_names_list = [i[0] for i in courses_list] #(sorted) list containing only the names of the courses
 
 	#SELECT today's lecture from proper table and save them in a list of tuples. Then convert list of tuples to list of lecture objects(for each tuple->lecture object)
-	c.execute("SELECT course_name, starting_time_hour, starting_time_minute, ending_time_hour, ending_time_minute FROM scheduled_lectures WHERE day ='{}'".format(day))
+	c.execute("SELECT course_name, starting_time_hour, starting_time_minute, ending_time_hour, ending_time_minute FROM scheduled_lectures WHERE day = ?", (day, ))#day
 	scheduled_lectures_list_temp = c.fetchall()
-	c.execute("SELECT course_name, starting_time_hour, starting_time_minute, ending_time_hour, ending_time_minute FROM extra_lectures WHERE day_of_the_month ='{}' AND month ='{}'".format(day_int,month_int))
+	c.execute("SELECT course_name, starting_time_hour, starting_time_minute, ending_time_hour, ending_time_minute FROM extra_lectures WHERE day_of_the_month = ? AND month = ?", (day_int,month_int))#day_int,month_int
 	extra_lectures_list_temp = c.fetchall()
-	c.execute("SELECT course_name, starting_time_hour, starting_time_minute, ending_time_hour, ending_time_minute FROM canceled_lectures WHERE day_of_the_month ='{}' AND month ='{}'".format(day_int,month_int))
+	c.execute("SELECT course_name, starting_time_hour, starting_time_minute, ending_time_hour, ending_time_minute FROM canceled_lectures WHERE day_of_the_month = ? AND month = ? ", (day_int, month_int)) #day_int,month_int
 	canceled_lectures_list_temp = c.fetchall()
 	lectures_to_be_recorded_temp = scheduled_lectures_list_temp + extra_lectures_list_temp
 	
