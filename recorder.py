@@ -210,14 +210,7 @@ class teamsLecture(lecture):
 	def showDetails(self):
 		print("Course:{} | Platform: Teams  | Lecture_No:{} | Starting time: {} | Ending time: {} | Team: {} | Channel: {}".format(self.course, self.lecture_no, time.ctime(self.startingTime), time.ctime(self.endingTime),self.team_title,self.team_channel))		
 	
-	def teamsLogin(self):
-		self.browser = webdriver.Chrome(executable_path='/usr/bin/chromedriver', options = setupChromeOptions());	#may need change
-		self.browser.maximize_window()
-		self.browser.get("http://teams.microsoft.com/")
-		self.inputTextboxByName("loginfmt", TEAMS_EMAIL)
-		self.clickByCssSelector( ".button.primary")
-		self.browser.implicitly_wait(IMPLICITLY_WAIT_TIME) 
-
+	def ntuaLogin(self):
 		self.inputTextboxByName("j_username", NTUA_USERNAME)
 		self.inputTextboxByName("j_password", NTUA_PASSWORD)
 		self.clickByName("donotcache")
@@ -226,7 +219,16 @@ class teamsLecture(lecture):
 		self.clickByCssSelector(".button.secondary")
 		if (self.browser).current_url != 'https://teams.microsoft.com/_#/school//?ctx=teamsGrid':
 			self.browser.get("https://teams.microsoft.com/_#/school//?ctx=teamsGrid")
-			self.clickByCssSelector(".use-app-lnk") 
+			self.clickByCssSelector(".use-app-lnk") 	
+
+	def teamsLogin(self):
+		self.browser = webdriver.Chrome(executable_path='/usr/bin/chromedriver', options = setupChromeOptions());	#may need change
+		self.browser.maximize_window()
+		self.browser.get("http://teams.microsoft.com/")
+		self.inputTextboxByName("loginfmt", TEAMS_EMAIL)
+		self.clickByCssSelector( ".button.primary")
+		self.browser.implicitly_wait(IMPLICITLY_WAIT_TIME) 
+		self.ntuaLogin()
 	
 	def teamsEnterCourse(self):
 		#self.clickByCssSelector('#toast-container button[title="Dismiss"]');
@@ -301,7 +303,7 @@ class webexLecture(lecture):
 		self.browser.quit()	
 
 
-def main():
+def startRecording():
 	day = datetime.datetime.now().date().weekday()
 	day_int =datetime.datetime.now().date().day
 	month_int =datetime.datetime.now().date().month
@@ -360,4 +362,4 @@ def main():
 	#shutdown
 
 if __name__ == "__main__":
-	main()
+	startRecording()
