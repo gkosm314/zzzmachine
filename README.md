@@ -1,3 +1,5 @@
+Disclaimer: Please do not use this script to record a meeting without the consent of all the participants. Such actions are illegal and violate laws regarding privacy.
+
 # zzzmachine
 
 The more you sleep, the more you learn.
@@ -5,6 +7,7 @@ The more you sleep, the more you learn.
 ## Introduction
 
 This script automates the recording of online lectures and uploads the recordings to a Google Drive account, so you can watch them when you wake up.
+
 
 ## Requriments
 The scirpt is developed for Linux machines.
