@@ -31,4 +31,4 @@ It reqiures:
  * Implement GUI
  * Create an installer
  * Add support for Windows
- * Create a user-frienly way to complete Google Drive authentication
+ * Create a user-friendly way to complete Google Drive authentication
