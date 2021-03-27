@@ -210,6 +210,7 @@ class teamsLecture(lecture):
 	def showDetails(self):
 		print("Course:{} | Platform: Teams  | Lecture_No:{} | Starting time: {} | Ending time: {} | Team: {} | Channel: {}".format(self.course, self.lecture_no, time.ctime(self.startingTime), time.ctime(self.endingTime),self.team_title,self.team_channel))		
 	
+	#Replace this function with a selenium automation function for your organisation's authentication page
 	def ntuaLogin(self):
 		self.inputTextboxByName("j_username", NTUA_USERNAME)
 		self.inputTextboxByName("j_password", NTUA_PASSWORD)
