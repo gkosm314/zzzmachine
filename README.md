@@ -26,9 +26,3 @@ It reqiures:
    * https://medium.com/analytics-vidhya/how-to-connect-google-drive-to-python-using-pydrive-9681b2a14f20
 3. After that, run *database_initializer.py* in order to create **myschedule.db**
 4. Finally insert your schedule in **myschedule.db** and run *recorder.py*
-
-## TODO
- * Implement GUI
- * Create an installer
- * Add support for Windows
- * Create a user-friendly way to complete Google Drive authentication
